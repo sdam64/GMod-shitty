@@ -41,7 +41,7 @@ if (SERVER) then
 		end
 		-- print(deepSize(buff, 0))
 		net.Start("Bundle.Network.NetVars.Stream")
-			net.WriteInt( (deepSize(buff, 0) + serialize:len()), 32 )
+			net.WriteInt( (deepSize(buff, 0) + serialize:len()), 8 )
 			net.WriteData(util.TableToJSON(buff), (deepSize(buff, 0) + serialize:len()))
 		net.Send(ply)
 	end)
@@ -49,7 +49,7 @@ end
 if (CLIENT) then 
 	net.Receive("Bundle.Network.NetVars.Stream", function(len, ply) 
 		if (ply ~= nil) then return end // preventing p2p running 
-		local size  = net.ReadInt(32)   
+		local size  = net.ReadInt(8)   
 		local chunk = net.ReadData(size) 
 		
 		local deserialize = util.JSONToTable(chunk)
